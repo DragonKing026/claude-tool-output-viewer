@@ -1,0 +1,49 @@
+{
+  "name": "claude-tool-output-viewer",
+  "displayName": "Claude Code Tool Output Viewer (unofficial)",
+  "description": "Unofficial. Syntax highlighting, ANSI colors, word wrap and JSON formatting for tool output documents opened from Claude Code.",
+  "version": "0.1.0",
+  "publisher": "dragonking026",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DragonKing026/claude-tool-output-viewer"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other",
+    "Formatters"
+  ],
+  "keywords": [
+    "claude",
+    "claude code",
+    "tool output",
+    "ansi",
+    "json"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {},
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --import tsx --test \"test/**/*.test.ts\"",
+    "lint": "tsc --noEmit",
+    "package": "npm run lint && npm run build && vsce package --no-dependencies",
+    "measure": "node scripts/measure-model.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^4.1.1",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@vscode/vscode-languagedetection": "^1.0.23"
+  }
+}
