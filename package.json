@@ -27,13 +27,144 @@
   "activationEvents": [
     "onStartupFinished"
   ],
-  "contributes": {},
+  "contributes": {
+    "languages": [
+      {
+        "id": "claude-tool-output",
+        "aliases": [
+          "Claude Tool Output"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "claude-tool-output",
+        "scopeName": "source.claude-tool-output",
+        "path": "./syntaxes/claude-tool-output.tmLanguage.json",
+        "embeddedLanguages": {
+          "source.json": "json"
+        }
+      }
+    ],
+    "configurationDefaults": {
+      "[claude-tool-output]": {
+        "editor.wordWrap": "on"
+      }
+    },
+    "commands": [
+      {
+        "command": "claudeToolOutputViewer.format",
+        "title": "Format Output (expand JSON, strip ANSI)",
+        "category": "Claude Tool Output",
+        "icon": "$(json)"
+      },
+      {
+        "command": "claudeToolOutputViewer.formatLine",
+        "title": "Format JSON Line",
+        "category": "Claude Tool Output"
+      },
+      {
+        "command": "claudeToolOutputViewer.showLog",
+        "title": "Show Detection Log",
+        "category": "Claude Tool Output"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "claudeToolOutputViewer.format",
+          "when": "claudeToolOutputViewer.isToolOutput"
+        },
+        {
+          "command": "claudeToolOutputViewer.formatLine",
+          "when": "false"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "claudeToolOutputViewer.format",
+          "when": "claudeToolOutputViewer.isToolOutput",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Claude Code Tool Output Viewer (unofficial)",
+      "properties": {
+        "claudeToolOutputViewer.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable detection and enhancement of tool output documents."
+        },
+        "claudeToolOutputViewer.schemes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "_claude_vscode_fs_readonly"
+          ],
+          "description": "URI schemes of tool output documents. This is an internal detail of the Claude Code extension and may change; adjust it here if detection stops working."
+        },
+        "claudeToolOutputViewer.namePattern": {
+          "type": "string",
+          "default": "tool output \\([a-z0-9]{1,8}\\)$",
+          "description": "Case-insensitive regular expression matched against the document file name. Documents whose name matches are treated as tool output regardless of scheme. Empty disables name matching."
+        },
+        "claudeToolOutputViewer.useModel": {
+          "type": "boolean",
+          "default": true,
+          "description": "When no rule matches, guess the language with the machine learning model used by VS Code (@vscode/vscode-languagedetection). Loaded lazily on first use and released after 5 idle minutes."
+        },
+        "claudeToolOutputViewer.modelMinLength": {
+          "type": "number",
+          "default": 100,
+          "minimum": 0,
+          "description": "Minimum text length (characters, without ANSI codes and exit code lines) before the model is consulted."
+        },
+        "claudeToolOutputViewer.modelConfidence": {
+          "type": "number",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Minimum model confidence (after VS Code's corrections) to accept a detected language. Below it the 'Claude Tool Output' language is used."
+        },
+        "claudeToolOutputViewer.wordWrap": {
+          "type": "boolean",
+          "default": true,
+          "description": "Turn word wrap on for tool output editors whose language would not wrap (for example JSON). Only affects that editor's document."
+        },
+        "claudeToolOutputViewer.ansi": {
+          "type": "string",
+          "enum": [
+            "hide",
+            "dim",
+            "off"
+          ],
+          "default": "hide",
+          "enumDescriptions": [
+            "Show ANSI colors and hide the escape sequences.",
+            "Show ANSI colors and dim the escape sequences instead of hiding them.",
+            "Leave ANSI sequences untouched."
+          ],
+          "description": "How ANSI escape sequences in tool output are displayed."
+        },
+        "claudeToolOutputViewer.codeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a 'Format JSON' CodeLens above every line that is a JSON object or array."
+        }
+      }
+    }
+  },
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node --import tsx --test \"test/**/*.test.ts\"",
     "lint": "tsc --noEmit",
-    "package": "npm run lint && npm run build && vsce package --no-dependencies",
-    "measure": "node scripts/measure-model.mjs"
+    "package": "npm run lint && npm run build && vsce package",
+    "measure": "node scripts/measure-model.mjs",
+    "test:integration": "npm run build && node test-integration/run.js"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",
@@ -41,9 +172,21 @@
     "@vscode/vsce": "^4.1.1",
     "esbuild": "^0.28.2",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.3.2"
   },
   "dependencies": {
     "@vscode/vscode-languagedetection": "^1.0.23"
-  }
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": true
+  },
+  "bugs": {
+    "url": "https://github.com/DragonKing026/claude-tool-output-viewer/issues"
+  },
+  "homepage": "https://github.com/DragonKing026/claude-tool-output-viewer#readme"
 }

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Claude Tool Output",
+  "scopeName": "source.claude-tool-output",
+  "patterns": [
+    { "include": "#json-line" },
+    { "include": "#cwd-reset" },
+    { "include": "#exit-code" },
+    { "include": "#time-bash" },
+    { "include": "#time-zsh" },
+    { "include": "#error" },
+    { "include": "#warning" },
+    { "include": "#url" },
+    { "include": "#string-double" },
+    { "include": "#string-single" },
+    { "include": "#datetime" },
+    { "include": "#duration" },
+    { "include": "#size" },
+    { "include": "#path" },
+    { "include": "#number" }
+  ],
+  "repository": {
+    "json-line": {
+      "begin": "^(?=\\s*(?:\\{|\\[)(?!\\d+m))",
+      "end": "$",
+      "patterns": [{ "include": "source.json" }]
+    },
+    "cwd-reset": {
+      "match": "^Shell cwd was reset to .*$",
+      "name": "comment.line.shell-cwd.claude-tool-output"
+    },
+    "exit-code": {
+      "patterns": [
+        {
+          "match": "^(Exit code) (0)\\b",
+          "captures": {
+            "1": { "name": "markup.inserted.exit-code.claude-tool-output" },
+            "2": { "name": "constant.numeric.exit-code.claude-tool-output markup.inserted" }
+          }
+        },
+        {
+          "match": "^(Exit code) (-?\\d+)\\b",
+          "captures": {
+            "1": { "name": "invalid.illegal.exit-code.claude-tool-output token.error-token" },
+            "2": { "name": "invalid.illegal.exit-code.claude-tool-output token.error-token" }
+          }
+        }
+      ]
+    },
+    "time-bash": {
+      "match": "^(real|user|sys)(\\s+)(\\d+m[\\d.]+s)\\s*$",
+      "captures": {
+        "1": { "name": "keyword.other.time.claude-tool-output" },
+        "3": { "name": "constant.numeric.time.claude-tool-output" }
+      }
+    },
+    "time-zsh": {
+      "match": "(\\d+(?:\\.\\d+)?s?)(\\s+)(user)(\\s+)(\\d+(?:\\.\\d+)?s?)(\\s+)(system)(\\s+)(\\d+%)(\\s+)(cpu)(\\s+)([\\d:.]+)(\\s+)(total)",
+      "captures": {
+        "1": { "name": "constant.numeric.time.claude-tool-output" },
+        "3": { "name": "keyword.other.time.claude-tool-output" },
+        "5": { "name": "constant.numeric.time.claude-tool-output" },
+        "7": { "name": "keyword.other.time.claude-tool-output" },
+        "9": { "name": "constant.numeric.time.claude-tool-output" },
+        "11": { "name": "keyword.other.time.claude-tool-output" },
+        "13": { "name": "constant.numeric.time.claude-tool-output" },
+        "15": { "name": "keyword.other.time.claude-tool-output" }
+      }
+    },
+    "error": {
+      "match": "(?i:\\b(?:errors?|failed|failures?|fatal|exceptions?|tracebacks?|denied|not found|no such file or directory|b[łl][ąa]d|b[łl][ęe]dy)\\b)",
+      "name": "invalid.illegal.error.claude-tool-output token.error-token"
+    },
+    "warning": {
+      "match": "(?i:\\b(?:warnings?|warn|deprecated|ostrze[żz]enie|uwaga)\\b)",
+      "name": "markup.changed.warning.claude-tool-output token.warn-token"
+    },
+    "url": {
+      "match": "\\bhttps?://[^\\s\"'<>)\\]]+",
+      "name": "markup.underline.link.claude-tool-output"
+    },
+    "string-double": {
+      "match": "\"(?:[^\"\\\\\\n]|\\\\.)*\"",
+      "name": "string.quoted.double.claude-tool-output"
+    },
+    "string-single": {
+      "match": "(?<![\\w])'[^'\\n]*'(?![\\w])",
+      "name": "string.quoted.single.claude-tool-output"
+    },
+    "datetime": {
+      "match": "\\b\\d{4}-\\d{2}-\\d{2}(?:[T ]\\d{2}:\\d{2}(?::\\d{2}(?:[.,]\\d+)?)?(?:Z|[+-]\\d{2}:?\\d{2})?)?\\b|\\b\\d{1,2}:\\d{2}:\\d{2}(?:[.,]\\d+)?\\b",
+      "name": "constant.other.datetime.claude-tool-output"
+    },
+    "duration": {
+      "match": "\\b\\d+m\\d+(?:\\.\\d+)?s\\b|\\b\\d+(?:\\.\\d+)?\\s?(?:ms|µs|us|ns|s|sec|min|h)\\b",
+      "name": "constant.numeric.duration.claude-tool-output"
+    },
+    "size": {
+      "match": "\\b\\d+(?:\\.\\d+)?\\s?(?:[KMGT]i?B|kB|B)\\b",
+      "name": "constant.numeric.size.claude-tool-output"
+    },
+    "path": {
+      "match": "(?<![\\w/.:~-])(?:~|\\.{1,2})?/(?:[\\w.@+%=-]+/)*[\\w.@+%=-]+(?::\\d+(?::\\d+)?)?",
+      "name": "variable.other.path.claude-tool-output"
+    },
+    "number": {
+      "match": "(?<![\\w.])-?\\d+(?:\\.\\d+)?(?![\\w.])",
+      "name": "constant.numeric.claude-tool-output"
+    }
+  }
+}
