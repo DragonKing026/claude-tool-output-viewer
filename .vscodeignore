@@ -1,0 +1,13 @@
+**
+!dist/extension.js
+!package.json
+!README.md
+!LICENSE
+!CHANGELOG.md
+!language-configuration.json
+!syntaxes/*.json
+# runtime dependency: only the library and its model files
+!node_modules/@vscode/vscode-languagedetection/package.json
+!node_modules/@vscode/vscode-languagedetection/LICENSE
+!node_modules/@vscode/vscode-languagedetection/dist/lib/**
+!node_modules/@vscode/vscode-languagedetection/model/**
