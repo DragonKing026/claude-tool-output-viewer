@@ -1,0 +1,12 @@
+Exit code 1
+[1;31mERROR[0m build failed: [33mwarning[0m deprecated API in /src/app/main.ts:42:7
+[32m✔ 12 passed[0m, [31m1 failed[0m (2.4s)
+See https://example.com/docs/errors for "details".
+{"status":"failed","code":2,"files":["a.ts","b.ts"],"took":"350ms"}
+wrote 12.5 MB to /tmp/out.bin at 2026-11-24 10:00:05
+
+real	0m1.234s
+user	0m0.500s
+sys	0m0.100s
+0.50s user 0.10s system 55% cpu 1.092 total
+Shell cwd was reset to /tmp

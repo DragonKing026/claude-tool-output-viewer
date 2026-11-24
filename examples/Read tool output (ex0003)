@@ -1,0 +1,18 @@
+# Release notes
+
+## Added
+
+- Word wrap for tool output
+- **ANSI** colors
+
+| a | b |
+|---|---|
+| 1 | 2 |
+
+See [the docs](https://example.com).
+
+```diff
+@@ -1 +1 @@
+-old
++new
+```

@@ -1,0 +1,11 @@
+import { readFile } from "fs/promises";
+
+interface Options {
+  path: string;
+  encoding?: BufferEncoding;
+}
+
+export async function load(options: Options): Promise<string> {
+  const data = await readFile(options.path, options.encoding ?? "utf8");
+  return data.toString();
+}
