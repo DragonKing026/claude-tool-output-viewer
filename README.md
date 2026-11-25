@@ -22,6 +22,14 @@ This extension makes those documents readable:
 
 The original document is never modified (it belongs to the Claude Code extension and is read-only).
 
+## Install
+
+From the VS Code Marketplace: search for **Claude Code Tool Output Viewer** in the Extensions view, or run
+
+```sh
+code --install-extension dragonking026.claude-tool-output-viewer
+```
+
 ## How it works
 
 1. A document is treated as tool output when its URI scheme is listed in `claudeToolOutputViewer.schemes`
@@ -116,14 +124,27 @@ npm ci
 npm test            # unit tests (node --test via tsx): rules, ANSI, formatting, grammar, model mapping
 npm run lint        # tsc --noEmit
 npm run build       # esbuild -> dist/extension.js
-npm run package     # lint + build + vsce package -> claude-tool-output-viewer-0.1.0.vsix
+npm run package     # lint + build (vscode:prepublish) + vsce package -> claude-tool-output-viewer-0.1.0.vsix
 npm run measure     # memory measurement of the model
 npm run test:integration   # starts an isolated VS Code (temporary profile) and checks the detected languages
 ```
 
 `@vscode/vscode-languagedetection` is kept as an external runtime dependency: it loads its model files
 relative to its own location, so the `.vsix` contains the package's `dist/lib` and `model` folders under
-`node_modules`. Install the package with **Extensions: Install from VSIX...**.
+`node_modules`. Install a local package with **Extensions: Install from VSIX...**.
+
+## Releasing
+
+Releases are published to the VS Code Marketplace by [`.github/workflows/publish.yml`](.github/workflows/publish.yml)
+using Marketplace **Trusted Publishing** (OIDC through Microsoft Entra ID), so no token is stored in the repository.
+
+1. Bump `version` in `package.json` and add an entry to `CHANGELOG.md`.
+2. Commit, then tag and push: `git tag v0.2.0 && git push origin main v0.2.0`.
+3. The workflow checks that the tag matches the version, runs lint and tests, and runs `vsce publish --oidc`
+   in the `marketplace` environment.
+
+One-time setup: publisher `dragonking026` on the Marketplace with a Trusted Publishing policy for repository
+`DragonKing026/claude-tool-output-viewer`, workflow `publish.yml`, environment `marketplace`.
 
 ## License
 

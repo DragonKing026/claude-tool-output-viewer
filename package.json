@@ -5,6 +5,15 @@
   "version": "0.1.0",
   "publisher": "dragonking026",
   "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1e2129",
+    "theme": "dark"
+  },
+  "homepage": "https://github.com/DragonKing026/claude-tool-output-viewer#readme",
+  "bugs": {
+    "url": "https://github.com/DragonKing026/claude-tool-output-viewer/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/DragonKing026/claude-tool-output-viewer"
@@ -14,14 +23,20 @@
   },
   "categories": [
     "Other",
-    "Formatters"
+    "Formatters",
+    "Programming Languages"
   ],
   "keywords": [
     "claude",
     "claude code",
+    "anthropic",
     "tool output",
     "ansi",
-    "json"
+    "ansi colors",
+    "json",
+    "log",
+    "syntax highlighting",
+    "language detection"
   ],
   "main": "./dist/extension.js",
   "activationEvents": [
@@ -162,7 +177,8 @@
     "build": "node scripts/build.mjs",
     "test": "node --import tsx --test \"test/**/*.test.ts\"",
     "lint": "tsc --noEmit",
-    "package": "npm run lint && npm run build && vsce package",
+    "vscode:prepublish": "npm run build",
+    "package": "npm run lint && vsce package",
     "measure": "node scripts/measure-model.mjs",
     "test:integration": "npm run build && node test-integration/run.js"
   },
@@ -184,9 +200,5 @@
       "supported": true
     },
     "virtualWorkspaces": true
-  },
-  "bugs": {
-    "url": "https://github.com/DragonKing026/claude-tool-output-viewer/issues"
-  },
-  "homepage": "https://github.com/DragonKing026/claude-tool-output-viewer#readme"
+  }
 }

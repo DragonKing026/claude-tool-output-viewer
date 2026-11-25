@@ -8,3 +8,4 @@
 - ANSI colors shown as editor decorations; escape sequences hidden or dimmed.
 - Word wrap for tool output editors whose language does not wrap by default.
 - "Format Output" command and per-line "Format JSON" CodeLens, shown in a read-only side-by-side document.
+- Marketplace icon and metadata; release workflow with Trusted Publishing.
